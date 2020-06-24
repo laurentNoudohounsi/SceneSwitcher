@@ -51,6 +51,9 @@ public:
 
 	void loadUI();
 
+  void startAbletonLink();
+  void stopAbletonLink();
+
 public slots:
 	void on_switches_currentRowChanged(int idx);
 	void on_up_clicked();
@@ -90,6 +93,7 @@ public slots:
 	void on_sceneRoundTripLoad_clicked();
 	void on_sceneRoundTripUp_clicked();
 	void on_sceneRoundTripDown_clicked();
+  void on_abletonLink_clicked();
 
 	void on_autoStopSceneCheckBox_stateChanged(int state);
 	void on_autoStopScenes_currentTextChanged(const QString &text);

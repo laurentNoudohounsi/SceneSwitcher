@@ -399,3 +399,17 @@ void SwitcherData::loadSceneRoundTripSwitches(obs_data_t *obj)
 	}
 	obs_data_array_release(sceneRoundTripArray);
 }
+
+void SceneSwitcher::on_abletonLink_clicked() {
+
+
+}
+
+void SceneSwitcher::startAbletonLink() {
+
+}
+
+void SceneSwitcher::stopAbletonLink() {
+
+}
+
