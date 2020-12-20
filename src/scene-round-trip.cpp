@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QTextStream>
+#include <QTimer>
 #include <obs.hpp>
 
 #include "headers/advanced-scene-switcher.hpp"
@@ -401,15 +402,59 @@ void SwitcherData::loadSceneRoundTripSwitches(obs_data_t *obj)
 }
 
 void SceneSwitcher::on_abletonLink_clicked() {
+  QColor abletonLinkButtonBackgroundColor;
 
+  if (link->isEnabled()) {
+    stopAbletonLink();
+    abletonLinkButtonBackgroundColor = Qt::darkGray;
+  } else {
+    startAbletonLink();
+    abletonLinkButtonBackgroundColor = Qt::blue;
+  }
 
+  ui->abletonLink->setAutoFillBackground(true);
+  auto palette = ui->abletonLink->palette();
+  palette.setColor(QPalette::Base, abletonLinkButtonBackgroundColor);
+  ui->abletonLink->setPalette(palette);
+  ui->abletonLink->show();
 }
 
 void SceneSwitcher::startAbletonLink() {
+  auto onTempoChange = [this](double bpm) {
 
+    ui->abletonLink->setText(QString::number(bpm, 'f', 2));
+
+    const double quantum = 4;
+    const auto time = link->clock().micros();
+    const auto sessionState = link->captureAppSessionState();
+
+    const double msInOneMinute = 60000;
+    const double quarterNoteDuration = msInOneMinute / bpm;
+    const double wholeNoteDuration = quarterNoteDuration * quantum;
+
+    const auto phase = sessionState.phaseAtTime(time, quantum);
+    const auto delay = ((quantum - phase) / quantum) * wholeNoteDuration;
+
+    for (auto& sceneRoundTripSwitch : switcher->sceneRoundTripSwitches) {
+      sceneRoundTripSwitch.delay = delay;
+    }
+
+    QTimer::singleShot(delay, this, []() {
+      switcher->Stop();
+      switcher->Start();
+    });
+
+    std::cout << "New tempo: " << bpm << std::endl;
+  };
+  link->setTempoCallback(onTempoChange);
+
+  link->enable(true);
+  link->enableStartStopSync(true);
 }
 
 void SceneSwitcher::stopAbletonLink() {
-
+  link->enable(false);
+  link->enableStartStopSync(false);
+  link->setTempoCallback([](double bpm) {});
 }
 

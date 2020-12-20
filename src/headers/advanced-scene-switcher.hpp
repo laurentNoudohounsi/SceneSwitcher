@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <ableton/Link.hpp>
 #ifdef BUILD_OUT_OF_TREE
 #include "../../forms/ui_advanced-scene-switcher.h"
 #else
@@ -21,6 +22,7 @@ class SceneSwitcher : public QDialog {
 
 public:
 	std::unique_ptr<Ui_SceneSwitcher> ui;
+  std::unique_ptr<ableton::Link> link;
 	bool loading = true;
 
 	SceneSwitcher(QWidget *parent);

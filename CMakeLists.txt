@@ -6,10 +6,13 @@ if(BUILD_OUT_OF_TREE)
 	# out of tree builds
 	# credits to c3r1c3
 	set(CMAKE_PREFIX_PATH "${QTDIR}")
+	set(CMAKE_AUTORCC ON)
+	set(CMAKE_AUTOMOC ON)
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/external")
 
 	include(external/FindLibObs.cmake)
+	include(/Users/laurent/Clones/link/AbletonLinkConfig.cmake)
 	find_package(LibObs REQUIRED)
 	find_package(Qt5Core REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
@@ -106,7 +109,8 @@ if(BUILD_OUT_OF_TREE)
 		${LIBOBS_FRONTEND_API_LIB}
 		Qt5::Core
 		Qt5::Widgets
-		${LIBCURL_LIBRARIES})
+		${LIBCURL_LIBRARIES}
+		Ableton::Link)
 
 	# Additional commands to install the module in the correct place.
 	# Find all the translation files so we can copy them to the correct

@@ -30,7 +30,7 @@ SwitcherData *switcher = nullptr;
  * Create the Advanced Scene Switcher settings window
  ********************************************************************************/
 SceneSwitcher::SceneSwitcher(QWidget *parent)
-	: QDialog(parent), ui(new Ui_SceneSwitcher)
+	: QDialog(parent), ui(new Ui_SceneSwitcher), link(new ableton::Link(120))
 {
 	ui->setupUi(this);
 
